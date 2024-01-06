@@ -41,6 +41,11 @@ func (field Field[TModel, TAttribute]) Value() *FieldValue[TModel, TAttribute] {
 	return NewFieldValue(field)
 }
 
+// Aggregate TODO
+func (field Field[TModel, TAttribute]) Aggregate() FieldAggregation {
+	return FieldAggregation{field: field}
+}
+
 func (field Field[TModel, TAttribute]) getModelType() reflect.Type {
 	return reflect.TypeOf(*new(TModel))
 }
@@ -204,6 +209,11 @@ func (numericField NumericField[TModel, TAttribute]) Value() *NumericFieldValue[
 
 func (numericField NumericField[TModel, TAttribute]) Set() NumericFieldSet[TModel, TAttribute] {
 	return NumericFieldSet[TModel, TAttribute]{field: numericField}
+}
+
+// Aggregate TODO
+func (numericField NumericField[TModel, TAttribute]) Aggregate() NumericFieldAggregation {
+	return NumericFieldAggregation{FieldAggregation: numericField.Field.Aggregate()}
 }
 
 type NullableNumericField[
