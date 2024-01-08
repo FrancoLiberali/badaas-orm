@@ -41,6 +41,11 @@ func (field Field[TModel, TAttribute]) Value() *FieldValue[TModel, TAttribute] {
 	return NewFieldValue(field)
 }
 
+// Aggregate allows applying aggregation functions to the field inside a group by
+func (field Field[TModel, TAttribute]) Aggregate() FieldAggregation {
+	return FieldAggregation{field: field}
+}
+
 func (field Field[TModel, TAttribute]) getModelType() reflect.Type {
 	return reflect.TypeOf(*new(TModel))
 }
@@ -110,6 +115,11 @@ func (boolField BoolField[TModel]) Is() BoolFieldIs[TModel] {
 	return BoolFieldIs[TModel]{
 		field: boolField.Field,
 	}
+}
+
+// Aggregate allows applying aggregation functions to the field inside a group by
+func (boolField BoolField[TModel]) Aggregate() BoolFieldAggregation {
+	return BoolFieldAggregation{FieldAggregation: boolField.Field.Aggregate()}
 }
 
 func NewBoolField[TModel model.Model](name, column, columnPrefix string) BoolField[TModel] {
@@ -204,6 +214,11 @@ func (numericField NumericField[TModel, TAttribute]) Value() *NumericFieldValue[
 
 func (numericField NumericField[TModel, TAttribute]) Set() NumericFieldSet[TModel, TAttribute] {
 	return NumericFieldSet[TModel, TAttribute]{field: numericField}
+}
+
+// Aggregate allows applying aggregation functions to the field inside a group by
+func (numericField NumericField[TModel, TAttribute]) Aggregate() NumericFieldAggregation {
+	return NumericFieldAggregation{FieldAggregation: numericField.Field.Aggregate()}
 }
 
 type NullableNumericField[
